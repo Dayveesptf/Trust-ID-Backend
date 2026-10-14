@@ -17,6 +17,15 @@ const userSchema = new mongoose.Schema(
       granted: { type: Boolean, default: false },
       grantedAt: Date,
       version: { type: String, default: "v1" }
+    },
+    // Analysis consent and bank sharing are deliberately separate.
+    // A customer profile is visible in the Ecobank workspace only after
+    // the customer explicitly chooses to share it.
+    sharingConsent: {
+      granted: { type: Boolean, default: false },
+      grantedAt: Date,
+      revokedAt: Date,
+      version: { type: String, default: "v1" }
     }
   },
   { timestamps: true }

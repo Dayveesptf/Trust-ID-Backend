@@ -12,7 +12,8 @@ const allowedFields = [
   "recurringPaymentConsistency",
   "averageMonthlyInflow",
   "averageMonthlySavings",
-  "monthlyExpenses"
+  "monthlyExpenses",
+  "evidencePeriodMonths"
 ];
 
 export async function upsertFinancialProfile(req, res) {
@@ -27,6 +28,14 @@ export async function upsertFinancialProfile(req, res) {
   for (const field of allowedFields) {
     if (req.body[field] !== undefined) payload[field] = req.body[field];
   }
+
+  // This build only supports the competition demo dataset. Do not allow a
+  // browser request to claim that real bank or uploaded-statement data was verified.
+  const requestedPeriod = Number(payload.evidencePeriodMonths ?? 7);
+  payload.evidencePeriodMonths = Number.isFinite(requestedPeriod)
+    ? Math.min(Math.max(Math.round(requestedPeriod), 0), 24)
+    : 7;
+  payload.sourceType = "SIMULATED_DEMO";
 
   const profile = await FinancialProfile.findOneAndUpdate(
     { userId: req.user._id },

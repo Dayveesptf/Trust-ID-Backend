@@ -7,7 +7,7 @@ import User from "../src/models/User.js";
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
-  throw new Error("MONGO_URI is not defined in your environment.");
+  throw new Error("MONGODB_URI is not defined in your environment.");
 }
 
 const officer = {

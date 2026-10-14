@@ -24,6 +24,9 @@ export async function generateTrustProfile(req, res) {
       userId: req.user._id,
       totalScore: result.totalScore,
       band: result.band,
+      dataSource: financial.sourceType || "SIMULATED_DEMO",
+      evidencePeriodMonths: financial.evidencePeriodMonths ?? 7,
+      scoreModelVersion: "prototype-v1",
       factors: {
         incomeConsistency: { score: result.factors.incomeConsistency, max: 200 },
         savingsBehaviour: { score: result.factors.savingsBehaviour, max: 150 },
@@ -33,6 +36,7 @@ export async function generateTrustProfile(req, res) {
       },
       strengths: insights.strengths,
       opportunities: insights.opportunities,
+      recommendations: insights.recommendations,
       evidence: {
         averageMonthlyInflow: financial.averageMonthlyInflow,
         averageMonthlySavings: financial.averageMonthlySavings,
